@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
+import com.dartharrmi.coroutinesonandroid.utils.Filter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,12 @@ class MainActivity : AppCompatActivity() {
             val originalDeferred = coroutinesScope.async(Dispatchers.IO) {
                 getOriginalBitmap()
             }
-            loadImage(originalDeferred.await())
+
+            val filteredDeferred = coroutinesScope.async(Dispatchers.Default) {
+                applyFilter(originalDeferred.await())
+            }
+
+            loadImage(filteredDeferred.await())
         }
     }
 
@@ -40,4 +46,6 @@ class MainActivity : AppCompatActivity() {
         imageView.visibility = VISIBLE
         imageView.setImageBitmap(bitmap)
     }
+
+    private fun applyFilter(bitmap: Bitmap) = Filter.apply(bitmap)
 }
