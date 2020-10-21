@@ -73,3 +73,7 @@ fabric.properties
 build/
 
 .idea/
+
+/.gradle/
+
+/build/
